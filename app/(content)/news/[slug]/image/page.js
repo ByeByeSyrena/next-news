@@ -1,10 +1,8 @@
-import React from "react";
-
 import { DUMMY_NEWS } from "@/dummy-news";
 import { notFound } from "next/navigation";
 
-export default function ImagePage({ params }) {
-  const { slug: newsSlug } = React.use(params);
+export default async function ImagePage({ params }) {
+  const { slug: newsSlug } = await params;
 
   const newsItem = DUMMY_NEWS.find(newsItem => newsItem.slug === newsSlug);
 
