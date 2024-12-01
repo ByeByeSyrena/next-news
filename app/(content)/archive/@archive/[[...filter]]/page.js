@@ -3,25 +3,21 @@ import { getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear, getNewsF
 import Link from "next/link";
 
 export default async function FilteredNewsPage({ params }) {
-  let filter;
-  const waitFilter = await params;
-
-  if(waitFilter){
-   filter = waitFilter.filter;}
+  let filter = await params;
 
   const selectedYear = filter?.[0];
   const selectedMonth = filter?.[1];
 
   let news;
-  let links = getAvailableNewsYears();
+  let links = await getAvailableNewsYears();
 
   if (selectedYear && !selectedMonth) {
-    news = getNewsForYear(selectedYear);
+    news = await getNewsForYear(selectedYear);
     links = getAvailableNewsMonths(selectedYear);
   }
 
   if (selectedYear && selectedMonth) {
-    news = getNewsForYearAndMonth(selectedYear, selectedMonth);
+    news = await getNewsForYearAndMonth(selectedYear, selectedMonth);
     links = [];
   }
 
@@ -31,12 +27,12 @@ export default async function FilteredNewsPage({ params }) {
     newsContent = <NewsList news={news} />;
   }
 
-  if (
-    (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
-    (selectedYear && selectedMonth && !getAvailableNewsMonths(+selectedYear).includes(+selectedMonth))
-  ) {
-    throw new Error("Invalid filter.");
-  }
+  // if (
+  //   (selectedYear && !getAvailableNewsYears().includes(+selectedYear)) ||
+  //   (selectedYear && selectedMonth && !getAvailableNewsMonths(+selectedYear).includes(+selectedMonth))
+  // ) {
+  //   throw new Error("Invalid filter.");
+  // }
 
   return <>
     <header id='archive-header'>
@@ -55,7 +51,6 @@ export default async function FilteredNewsPage({ params }) {
         </ul>
       </nav>
     </header>
-    { }
     {newsContent}
   </>
 }
